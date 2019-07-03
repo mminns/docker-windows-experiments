@@ -1,0 +1,50 @@
+version: 1.0.{build}
+image: Visual Studio 2019 Preview
+environment:
+  APPVEYOR_RDP_PASSWORD: <your password>
+
+init:
+  - ps:  >-
+
+      iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+build_script:
+  - ps:  >-
+
+    echo content ...
+    dir
+    echo docker info...
+    docker info
+    echo docker images list...
+    docker images list
+    echo get-content dockerfile.noplatform | docker build -
+    get-content dockerfile.noplatform | docker build -
+    echo docker images list...\ndocker images list
+    echo get-content dockerfile.platform | docker build -
+    Get-Content dockerfile.platform | docker build -
+    echo docker images list... 
+    docker images list
+    echo turn on experimental mode
+    $configfile =@"
+    {
+        "experimental":true
+        "useWindowsContainers": false
+    }
+    $configfile|Out-File -FilePath c:\\Programdata\\docker\\config\\daemon.json -Encoding ascii -Force\nrestart-Service docker
+    echo docker info...
+    docker info
+    echo docker images list...
+    docker images list
+    echo get-content dockerfile.noplatform | docker build -
+    get-content dockerfile.noplatform | docker build -
+    echo docker images list...
+    docker images list
+    echo get-content dockerfile.platform | docker build -
+    Get-Content dockerfile.platform | docker build -
+    echo docker images list... 
+    docker images list\n\necho settings.json\n\nmore"
+
+  on_finish:
+  - ps:  >-
+
+    $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
