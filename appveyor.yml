@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2019 Preview
 environment:
-  APPVEYOR_RDP_PASSWORD: <your password>
+  APPVEYOR_RDP_PASSWORD: DaveLithgow1980
 
 init:
   - ps: |
