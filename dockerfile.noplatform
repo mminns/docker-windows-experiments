@@ -1,0 +1,11 @@
+    FROM ubuntu:18.10
+    EXPOSE 8080
+    RUN apt-get update -qq 
+    RUN apt-get install wget openjdk-8-jdk -qq 
+    RUN wget https://product-downloads.atlassian.com/software/jira/downloads/atlassian-jira-core-7.12.3.tar.gz 
+    RUN tar -xzf atlassian-jira-core-7.12.3.tar.gz 
+    RUN rm /atlassian-jira-core-7.12.3-standalone/bin/check-java.sh 
+    RUN mkdir jira-home 
+    ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre
+    ENV JIRA_HOME /jira-home
+    CMD /atlassian-jira-core-7.12.3-standalone/bin/start-jira.sh -fg 
