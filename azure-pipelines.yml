@@ -10,6 +10,12 @@ jobs:
   steps:
   - pwsh: |
 
+      Install-PackageProvider Nuget –Force
+
+      Install-Module –Name PowerShellGet –Force
+      Update-Module -Name PowerShellGet
+
+
       Install-Module DockerMSFTProvider
       Import-Module -Name DockerMSFTProvider -Force
       Import-Packageprovider -Name DockerMSFTProvider -Force
