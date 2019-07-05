@@ -13,6 +13,8 @@ jobs:
       $configfile = '{ "experimental":true }'
       $configfile|Out-File -FilePath c:\\Programdata\\docker\\config\\daemon.json -Encoding ascii -Force 
       more c:\\Programdata\\docker\\config\\daemon.json
+      Invoke-WebRequest -UseBasicParsing -OutFile dockerd.exe https://master.dockerproject.org/windows/x86_64/dockerd.exe
+      Invoke-WebRequest -UseBasicParsing -OutFile docker.exe https://master.dockerproject.org/windows/x86_64/docker.exe
       restart-Service docker
       docker info
       get-content .\dockerfile.platform | docker build -
