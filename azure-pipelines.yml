@@ -3,18 +3,21 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- master
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - pwsh: |
+      dir
+      $configfile = '{ "experimental":true }'
+      $configfile|Out-File -FilePath c:\\Programdata\\docker\\config\\daemon.json -Encoding ascii -Force 
+      more c:\\Programdata\\docker\\config\\daemon.json
+      restart-Service docker
+      docker info
+      docker build -f dockerfile.noplatform
+      docker images list
+      docker build -f dockerfile.platform
+      docker images list
+    displayName: 'Run all-the-things!'
 
-pool:
-  vmImage: 'windows-latest'
-
-steps:
-- script: docker version
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-    docker info
-  displayName: 'Run a multi-line script'
