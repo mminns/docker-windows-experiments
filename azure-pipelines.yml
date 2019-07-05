@@ -15,6 +15,12 @@ jobs:
       more c:\\Programdata\\docker\\config\\daemon.json
       Invoke-WebRequest -UseBasicParsing -OutFile dockerd.exe https://master.dockerproject.org/windows/x86_64/dockerd.exe
       Invoke-WebRequest -UseBasicParsing -OutFile docker.exe https://master.dockerproject.org/windows/x86_64/docker.exe
+      dir
+      Invoke-WebRequest -UseBasicParsing -OutFile release.zip https://github.com/linuxkit/lcow/releases/download/v4.14.35-v0.3.9/release.zip
+      dir
+      Remove-Item "$env:ProgramFiles\Linux Containers" -Force -Recurse
+      Expand-Archive release.zip -DestinationPath "$Env:ProgramFiles\Linux Containers\."
+      rm release.zip
       restart-Service docker
       docker info
       get-content .\dockerfile.platform | docker build -
