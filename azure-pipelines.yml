@@ -19,8 +19,9 @@ jobs:
       Invoke-WebRequest -UseBasicParsing -OutFile release.zip https://github.com/linuxkit/lcow/releases/download/v4.14.35-v0.3.9/release.zip
       dir
       Expand-Archive release.zip -DestinationPath "$Env:ProgramFiles\Linux Containers\."
+      docker info
       rm release.zip
-      Install-WindowsFeature Containers,Hyper-V
+      Enable-WindowsOptionalFeature Containers,Hyper-V
       restart-Service docker
       docker info
       get-content .\dockerfile.platform | docker build -
