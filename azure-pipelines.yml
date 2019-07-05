@@ -20,6 +20,7 @@ jobs:
       dir
       Expand-Archive release.zip -DestinationPath "$Env:ProgramFiles\Linux Containers\."
       rm release.zip
+      Install-WindowsFeature Containers,Hyper-V
       restart-Service docker
       docker info
       get-content .\dockerfile.platform | docker build -
