@@ -57,4 +57,36 @@ jobs:
       get-content .\dockerfile.platform | docker build -
       docker images list
     displayName: 'Run all-the-things!'
+- job: WindowsPlatformPlusThree
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - powershell: |
+      # https://bcthomas.com/2019/02/getting-started-with-linux-containers-on-windows-server-2019/
+      docker info
+      Install-Module DockerMSFTProvider
+      Import-Module -Name DockerMSFTProvider -Force
+      Import-Packageprovider -Name DockerMSFTProvider -Force
+      Find-Package docker
+      Install-Package -Name Docker -Source DockerDefault 
+      # Set LCOW_SUPPORTED Variable to 1 for enabled
+      [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+      
+      # Enable Experimental Features in Dockerd daemon.conf
+      $configfile = @"
+      {
+          "experimental": true
+      }
+      "@
+      $configfile|Out-File -FilePath C:\ProgramData\docker\config\daemon.json -Encoding ascii -Force
+      Invoke-WebRequest -Uri "https://github.com/linuxkit/lcow/releases/download/v4.14.35-v0.3.9/release.zip" -UseBasicParsing -OutFile release.zip
+      Expand-Archive release.zip -DestinationPath "$Env:ProgramFiles\Linux Containers\."
+
+      Restart-Service docker
+
+      docker info
+      docker images list
+      get-content .\dockerfile.platform | docker build -
+      docker images list
+    displayName: 'Run all-the-things!'
 
