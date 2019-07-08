@@ -24,4 +24,18 @@ jobs:
       get-content .\dockerfile.platform | docker build -
       docker images list
     displayName: 'Run all-the-things!'
+- job: WindowsPlatformPlusOne
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - powershell: |
+      # https://www.altaro.com/msp-dojo/linux-containers-windows-server-2019/
+      [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+      Restart-Service docker
+
+      docker info
+      docker images list
+      get-content .\dockerfile.platform | docker build -
+      docker images list
+    displayName: 'Run all-the-things!'
 
