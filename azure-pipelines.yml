@@ -38,4 +38,23 @@ jobs:
       get-content .\dockerfile.platform | docker build -
       docker images list
     displayName: 'Run all-the-things!'
+- job: WindowsPlatformPlusTwo
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - powershell: |
+      # https://computingforgeeks.com/how-to-run-docker-containers-on-windows-server-2019/
+      Uninstall-Package -Name docker -ProviderName DockerMSFTProvider
+      Get-VM WinContainerHost | Set-VMProcessor -ExposeVirtualizationExtensions $true
+      Install-Module DockerProvider
+      Install-Package Docker -ProviderName DockerProvider -RequiredVersion preview
+
+      [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
+      Restart-Service docker
+
+      docker info
+      docker images list
+      get-content .\dockerfile.platform | docker build -
+      docker images list
+    displayName: 'Run all-the-things!'
 
