@@ -4,7 +4,7 @@
 # https://aka.ms/yaml
 
 jobs:
-- job: Windows-NoPlatform
+- job: WindowsNoPlatform
   pool:
     vmImage: 'windows-latest'
   steps:
@@ -14,7 +14,7 @@ jobs:
       get-content .\dockerfile.noplatform | docker build -
       docker images list
     displayName: 'Run all-the-things!'
-- job: Windows-Platform
+- job: WindowsPlatform
   pool:
     vmImage: 'windows-latest'
   steps:
