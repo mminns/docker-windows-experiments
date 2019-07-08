@@ -9,6 +9,7 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
+      docker version
       docker info
       docker images list
       get-content .\dockerfile.noplatform | docker build -
@@ -19,6 +20,7 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
+      docker version
       docker info
       docker images list
       get-content .\dockerfile.platform | docker build -
@@ -29,6 +31,8 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
+      docker version
+      docker info
       # https://www.altaro.com/msp-dojo/linux-containers-windows-server-2019/
       [Environment]::SetEnvironmentVariable("LCOW_SUPPORTED", "1", "Machine")
       Restart-Service docker
@@ -43,6 +47,8 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
+      docker version
+      docker info
       # https://computingforgeeks.com/how-to-run-docker-containers-on-windows-server-2019/
       Uninstall-Package -Name docker -ProviderName DockerMSFTProvider
       Get-VM WinContainerHost | Set-VMProcessor -ExposeVirtualizationExtensions $true
@@ -62,8 +68,9 @@ jobs:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
-      # https://bcthomas.com/2019/02/getting-started-with-linux-containers-on-windows-server-2019/
+      docker version
       docker info
+      # https://bcthomas.com/2019/02/getting-started-with-linux-containers-on-windows-server-2019/
       Install-Module DockerMSFTProvider
       Import-Module -Name DockerMSFTProvider -Force
       Import-Packageprovider -Name DockerMSFTProvider -Force
