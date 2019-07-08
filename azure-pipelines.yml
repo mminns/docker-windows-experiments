@@ -4,15 +4,24 @@
 # https://aka.ms/yaml
 
 jobs:
-- job: Windows
+- job: Windows-NoPlatform
   pool:
     vmImage: 'windows-latest'
   steps:
   - powershell: |
       docker info
-      get-content .\dockerfile.platform | docker build -
       docker images list
       get-content .\dockerfile.noplatform | docker build -
+      docker images list
+    displayName: 'Run all-the-things!'
+- job: Windows-Platform
+  pool:
+    vmImage: 'windows-latest'
+  steps:
+  - powershell: |
+      docker info
+      docker images list
+      get-content .\dockerfile.platform | docker build -
       docker images list
     displayName: 'Run all-the-things!'
 
