@@ -122,7 +122,7 @@ jobs:
           Write-Host "Hyper-V is disabled."
       }
 
-      Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V –All
+      Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V –All -Force
 
       $hyperv = Get-WindowsOptionalFeature -FeatureName Microsoft-Hyper-V-All -Online
       # Check if Hyper-V is enabled
